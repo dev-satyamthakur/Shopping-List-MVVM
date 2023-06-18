@@ -6,12 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.satyamthakur.learning.shoppinglistmvvm.R
 import com.satyamthakur.learning.shoppinglistmvvm.database.ShoppingItem
+import com.satyamthakur.learning.shoppinglistmvvm.databinding.ShoppingItemBinding
 import com.satyamthakur.learning.shoppinglistmvvm.ui.shoppinglist.ShoppingViewModel
-import kotlinx.android.synthetic.main.shopping_item.view.iv_delete
-import kotlinx.android.synthetic.main.shopping_item.view.iv_minus
-import kotlinx.android.synthetic.main.shopping_item.view.iv_plus
-import kotlinx.android.synthetic.main.shopping_item.view.tv_amount
-import kotlinx.android.synthetic.main.shopping_item.view.tv_name
 
 class ShoppingItemAdapter(
     var items: List<ShoppingItem>,
@@ -31,20 +27,21 @@ class ShoppingItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
+        val binding: ShoppingItemBinding = ShoppingItemBinding.bind(holder.itemView)
         val curShoppingItem = items[position];
-        holder.itemView.tv_name.text = curShoppingItem.name
-        holder.itemView.tv_amount.text = curShoppingItem.amount.toString()
+        binding.tvName.text = curShoppingItem.name
+        binding.tvAmount.text = curShoppingItem.amount.toString()
 
-        holder.itemView.iv_delete.setOnClickListener {
+        binding.ivDelete.setOnClickListener {
             viewModel.delete(curShoppingItem)
         }
 
-        holder.itemView.iv_plus.setOnClickListener {
+        binding.ivPlus.setOnClickListener {
             curShoppingItem.amount += 1
             viewModel.upsert(curShoppingItem)
         }
 
-        holder.itemView.iv_minus.setOnClickListener {
+        binding.ivMinus.setOnClickListener {
             if (curShoppingItem.amount > 0) {
                 curShoppingItem.amount -= 1
                 viewModel.upsert(curShoppingItem)
